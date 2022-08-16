@@ -1,16 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ToDoItem from "./ToDoItem";
 import InputArea from "./InputArea";
 
-function App() {
-  const [items, setItems] = useState([]);
+// to get localStorage data.
+const getLocalItems = () => {
+  let storageData = localStorage.getItem("todoData");
+  console.log(storageData);
+  if (storageData) {
+    return JSON.parse(localStorage.getItem("todoData"));
+  } else {
+    return [];
+  }
+};
 
+function App() {
+  const [items, setItems] = useState(getLocalItems());
+
+  // add items.
   function addItem(inputText) {
     setItems((prevItems) => {
       return [...prevItems, inputText];
     });
   }
 
+  // delete items.
   function deleteItem(id) {
     setItems((prevItems) => {
       return prevItems.filter((item, index) => {
@@ -18,6 +31,11 @@ function App() {
       });
     });
   }
+
+  // set localStorage data.
+  useEffect(() => {
+    localStorage.setItem("todoData", JSON.stringify(items));
+  }, [items]);
 
   return (
     <div className="container">
