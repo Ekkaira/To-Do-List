@@ -16,6 +16,13 @@ const getLocalItems = () => {
 function App() {
   const [items, setItems] = useState(getLocalItems());
 
+  // added "Enter" keypress functionality.
+  function handleKeyPress(event) {
+    return setItems((prevInputText) => {
+      return [...prevInputText, event.target.value];
+    });
+  }
+
   // add items.
   function addItem(inputText) {
     setItems((prevItems) => {
@@ -42,7 +49,7 @@ function App() {
       <div className="heading">
         <h1>To-Do List</h1>
       </div>
-      <InputArea onAdd={addItem} />
+      <InputArea onAdd={addItem} onKeyPress={handleKeyPress} />
       <div>
         <ul>
           {items.map((todoItem, index) => (
